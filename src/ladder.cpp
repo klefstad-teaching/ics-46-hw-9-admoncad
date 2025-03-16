@@ -36,7 +36,7 @@ bool is_adjacent(const string& word1, const string& word2){
                     return edit_distance_within(copy, word2, 0);
                 }
                 else if (longer == 2){
-                    copy = word1;
+                    copy = word2;
                     copy.erase(i, 1);
                     return edit_distance_within(word1, copy, 0);
                 }
