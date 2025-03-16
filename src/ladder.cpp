@@ -7,6 +7,46 @@ void error(string word1, string word2, string msg){
     cout << word1 << " and " << word2 << " " << msg << endl;
 }
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d){
+    /*
+    int counter = 0;
+    int length = str1.length();
+    for(int i = 0; i < length; ++i){
+        if(str1[i] != str2[i])
+            counter += 1;
+        if(counter > d)
+            return false;
+    }
+    return true;*/
+    int word1len = str1.length();
+    int word2len = str2.length();
+    int compare = word1len - word2len;
+    if(compare < 0)
+        compare *= -1;
+    if(compare > 1){
+        return false;}
+    if(compare == 1){
+        int longer = (word1len > word2len) ? 1: 2;
+        for(int i = 0; i < min(word1len, word2len); ++i){
+            if(str2[i] != str1[i]){
+                string copy;
+                if(longer == 1){
+                    copy = str1;
+                    copy.erase(i, 1);
+                   // cout << copy << endl;
+                    return edit_distance_within(copy, str2, 0);
+                }
+                else if (longer == 2){
+                    copy = str2;
+                    copy.erase(i, 1);
+                    //cout << copy << endl;
+                    return edit_distance_within(str1, copy, 0);
+                }
+            }
+        }
+        if(longer == 1)
+            return edit_distance_within(str1.substr(0, word1len - 1), str2, 0);
+        return edit_distance_within(str1, str2.substr(0, word2len -1), 0);
+    }
     int counter = 0;
     int length = str1.length();
     for(int i = 0; i < length; ++i){
@@ -18,6 +58,7 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
     return true;
 }
 bool is_adjacent(const string& word1, const string& word2){
+    /*
     int word1len = word1.length();
     int word2len = word2.length();
     int compare = word1len - word2len;
@@ -48,6 +89,9 @@ bool is_adjacent(const string& word1, const string& word2){
             return edit_distance_within(word1.substr(0, word1len - 1), word2, 0);
         return edit_distance_within(word1, word2.substr(0, word2len -1), 0);
     }
+    return edit_distance_within(word1, word2, 1);
+    */
+
     return edit_distance_within(word1, word2, 1);
 
 }
