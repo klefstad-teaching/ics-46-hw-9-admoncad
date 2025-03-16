@@ -1,69 +1,49 @@
-/*struct Node:
+#include "dijkstras.h"
+#include <queue>
 
-    int vertex
+vector<int> dijkstra_shortest_path(const Graph& G, int source, vector<int>& previous){
+    int numVert = G.size();
+    vector<int> distances(numVert, INF);
+    vector<bool> visited(numVert, false);
+    distances[source] = 0;
+    previous.assign(numVert, -1);
+    visited.assign(numVert, false);
 
-    int weight
+    priority_queue<pair<int, int>, vector<pair<int,int>>, greater<>> minHeap;
+    minHeap.push({source, 0});
+    while(!minHeap.empty()){
+        pair<int,int> current = minHeap.top();
+        minHeap.pop();
+        int u = current.first;
+        if(visited[u]) continue;
+        for(Edge edge : G[u]){
+            int v = edge.dst;
+            int weight = edge.weight;
+            if(!visited[v] && distances[u] + weight < distances[v]){
+                distances[v] = distances[u] + weight;
+                previous[v] = u;
+                minHeap.push({v, distances[v]});
+            }
+        }
+    }
+    return distances;
+}
 
+vector<int> extract_shortest_path(const vector<int>& distances, const vector<int>& previous, int destination){
+    vector<int> path;
+    if(distances[destination] == INF){
+        cout << "No path" << endl;
+        return {};
+    }
+    for(int i = destination; i != -1; i = previous[i]){
+        path.push_back(i);
+    }
+    return path; 
+}
 
-struct Graph:
-
-    list adjacencyList
-
-    list distance
-
-    list previous
-
-    list visited
-
-
-function dijkstra(source, graph):
-
-    n = graph.adjacencyList.size()
-
-
-    graph.distance.resize(n, INT_MAX)
-
-    graph.previous.resize(n, -1)
-
-    graph.visited.resize(n, false)
-
-
-    priorityQueue pq
-
-    pq.push(Node(source, 0))
-
-    graph.distance[source] = 0
-
-
-    while !pq.empty():
-
-        current = pq.pop_top()
-
-
-        u = current.vertex
-
-
-        if graph.visited[u]:
-
-            continue
-
-
-        graph.visited[u] = true
-
-
-        for each neighbor in graph.adjacencyList[u]:
-
-            v = neighbor.vertex
-
-            weight = neighbor.weight
-
-
-            if !graph.visited[v] and graph.distance[u] + weight < graph.distance[v]:
-
-                graph.distance[v] = graph.distance[u] + weight
-
-                graph.previous[v] = u
-
-                pq.push(Node(v, graph.distance[v]))
-
-end function*/
+void print_path(const vector<int>& v, int total){
+    int pathLen = v.size();
+    for(int i = 0; i < pathLen; ++i)
+        cout << v[i] << " ";
+    cout << endl << total;
+}
