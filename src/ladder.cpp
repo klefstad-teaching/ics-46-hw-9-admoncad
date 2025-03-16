@@ -23,21 +23,23 @@ bool is_adjacent(const string& word1, const string& word2){
     int compare = word1len - word2len;
     if(compare < 0)
         compare *= -1;
-    if(compare > 1)
-        return false;
+    if(compare > 1){
+        return false;}
     if(compare == 1){
-        int longer = 1 ? word1len > word2len : 2;
+        int longer = (word1len > word2len) ? 1: 2;
         for(int i = 0; i < min(word1len, word2len); ++i){
             if(word1[i] != word2[i]){
                 string copy;
                 if(longer == 1){
                     copy = word1;
                     copy.erase(i, 1);
+                   // cout << copy << endl;
                     return edit_distance_within(copy, word2, 0);
                 }
                 else if (longer == 2){
                     copy = word2;
                     copy.erase(i, 1);
+                    //cout << copy << endl;
                     return edit_distance_within(word1, copy, 0);
                 }
             }
@@ -115,11 +117,12 @@ void print_word_ladder(const vector<string>& ladder){
 void verify_word_ladder() {
     set<string> word_list;
     load_words(word_list, "words.txt");
-    print_word_ladder(generate_word_ladder("work", "play", word_list));
+    //print_word_ladder(generate_word_ladder("apple", "bapple", word_list));
     //my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
     //my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
     //my_assert(generate_word_ladder("code", "data", word_list).size() == 6);
     my_assert(generate_word_ladder("work", "play", word_list).size() == 6);
     my_assert(generate_word_ladder("sleep", "awake", word_list).size() == 8);
     my_assert(generate_word_ladder("car", "cheat", word_list).size() == 4);
+
 }
